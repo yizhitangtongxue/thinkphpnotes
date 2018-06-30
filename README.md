@@ -71,3 +71,17 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 ![tp5_installed](https://github.com/yizhitangtongxue/thinkphpnotes/blob/master/Files/tp5_installed.png)
 
 ### 至此，ThinkPHP5安装完成。
+
+我们可以用Git来维护文件版本，方便对文件进行版本的切换修改。
+
+在Github创建一个新的仓库，仓库名tp5。
+
+进入ThinkPHP的根目录，执行以下命令：
+```php
+echo "# tp5" >> README.md
+git init
+git add -A
+git commit -m "first commit"
+git remote add origin git@github.com:yizhitangtongxue/tp5.git
+git push -u origin master
+```
