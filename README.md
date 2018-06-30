@@ -174,6 +174,8 @@ php think build --module demoName
 
 此命令会生成一个demo模块，同时也会生成一个默认的Index控制器文件。
 
+生成的模块目录在tp5\application\demo下。
+
 \_\_DIR\_\_是PHP中的魔术常量，可以输出当前文件的绝对路径。
 
 >>..的意思是向上一级目录
