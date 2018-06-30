@@ -40,4 +40,4 @@ GitBash无法使用composer命令的解决办法，转自[即墨丹青](https://
 php `dirname $0`/composer.phar $*
 ```
 >**将该文件放到php.exe同目录下**
-有个这一行 #!/usr/bin/env sh ，git-bash 会自动识别为可执行文件，不需要也不能使用 chmod 命令修改权限。
+>>有个这一行 #!/usr/bin/env sh ，git-bash会自动识别为可执行文件，不需要也不能使用chmod命令修改权限。
