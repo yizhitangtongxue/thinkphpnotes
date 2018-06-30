@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# php /path/to/composer.phar $*
+php `dirname $0`/composer.phar $*
