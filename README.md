@@ -85,3 +85,28 @@ git commit -m "first commit"
 git remote add origin git@github.com:yizhitangtongxue/tp5.git
 git push -u origin master
 ```
+
+## 目录结构
+
+tp5
+├─application     应用目录
+├─extend          扩展类库目录（可定义）
+├─public          网站对外访问目录
+├─runtime         运行时目录（可定义）
+├─vendor          第三方类库目录（Composer）
+├─thinkphp        框架核心目录
+├─build.php       自动生成定义文件（参考）
+├─composer.json   Composer定义文件
+├─LICENSE.txt     授权说明文件
+├─README.md       README 文件
+├─think           命令行工具入口
+
+有几个关键的路径先了解下：
+
+目录	 | 说明 | 常量
+---  | ---- | ----
+tp5	 | 项目根目录 | ROOT_PATH
+tp5/application | 应用目录 | APP_PATH
+tp5/thinkphp | 框架核心目录 | THINK_PATH
+tp5/extend | 应用扩展目录	 | EXTEND_PATH
+tp5/vendor | Composer扩展目录 | VENDOR_PATH
