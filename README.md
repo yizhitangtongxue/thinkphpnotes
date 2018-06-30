@@ -9,16 +9,14 @@
 2. 打开命令行并依次执行下列命令安装最新版本的 Composer：
 ```php
 php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"
-//执行此条命令下载下来的 composer-setup.php 脚本将简单地检测 php.ini 中的参数设置，如果某些参数未正确设置则会给出警告；然后下载最新版本的 composer.phar 文件到当前目录。
+// 执行此条命令下载下来的 composer-setup.php 脚本将简单地检测 php.ini 中的参数设置，如果某些参数未正确设置则会给出警告；然后下载最新版本的 composer.phar 文件到当前目录。
+// 下载安装脚本 － composer-setup.php － 到当前目录。
 ```
 ```php
 php composer-setup.php
+//执行安装过程。
 ```
 ```php
 php -r "unlink('composer-setup.php');"
+// 删除安装脚本。
 ```
-
-3. 上述 3 条命令的作用依次是：
-  1. 下载安装脚本 － composer-setup.php － 到当前目录。
-  2. 执行安装过程。
-  3. 删除安装脚本。
