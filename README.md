@@ -18,21 +18,21 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 // 删除安装脚本。
 ```
-在PHP的根目录下使用CMD命令行(或者GitBash)，新建composer.bat文件
+在PHP的**根目录**下使用CMD命令行(或者GitBash)执行命令，新建composer.bat文件。
 ```php
 echo @php "%~dp0composer.phar" %*>composer.bat
 ```
-下载[composer.phar](https://getcomposer.org/composer.phar)文件，将其复制到PHP的根目录下。
+下载[composer.phar](https://getcomposer.org/composer.phar)文件，将其复制到PHP的**根目录**下。
 
-本Composer安装教程部分来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
+>>本Composer安装教程部分来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
 
 新开一个CMD命令行，使用composer -V命名，如果跳出版本信息即视为安装成功。
 
->记得经常执行composer selfupdate以保持Composer一直是最新版本哦！
+>>记得经常执行composer selfupdate以保持Composer一直是最新版本哦！
 
 GitBash无法使用composer命令的解决办法，转自[即墨丹青](https://blog.csdn.net/qq_26282869/article/details/80054551)：
 
->git-bash 不识别 composer.bat 文件，需要新建一个 composer (是没有后缀的文件)文件，输入如下内容：
+>>git-bash 不识别 composer.bat 文件，需要新建一个 composer (是没有后缀的文件)文件，输入如下内容：
 ```shell
 #!/usr/bin/env sh
 
