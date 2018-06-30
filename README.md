@@ -175,6 +175,17 @@ php think build --module demoName
 此命令会生成一个demo模块，同时也会生成一个默认的Index控制器文件。
 
 生成的模块目录在tp5\application\demo下。
+```
+controller是控制器文件
+model是模型文件
+view是视图文件
+config.php是模块配置文件
+common.php是模块公共文件
+```
+
+用户浏览网页->将操作传递给controller->控制器判断是否需要动态调用数据->需要->控制器将数据传递给model->model将数据传递给view进行渲染->view渲染完毕呈现给用户
+
+用户浏览网页->将操作传递给controller->控制器判断是否需要动态调用数据->不需要->view渲染完毕呈现给用户
 
 \_\_DIR\_\_是PHP中的魔术常量，可以输出当前文件的绝对路径。
 
