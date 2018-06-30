@@ -24,7 +24,7 @@ echo @php "%~dp0composer.phar" %*>composer.bat
 ```
 下载[composer.phar](https://getcomposer.org/composer.phar)文件，将其复制到PHP的**根目录**下。
 
-新开一个CMD命令行，使用composer -V命名，如果跳出版本信息即视为安装成功。
+新开一个CMD命令行，执行composer -V命令，如果跳出版本信息即视为安装成功。
 
 >>记得经常执行composer selfupdate以保持Composer一直是最新版本哦！
 
