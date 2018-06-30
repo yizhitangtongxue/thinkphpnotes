@@ -27,6 +27,7 @@ echo @php "%~dp0composer.phar" %*>composer.bat
 新开一个CMD命令行，使用composer -V命名，如果跳出版本信息即视为安装成功。
 
 >>记得经常执行composer selfupdate以保持Composer一直是最新版本哦！
+
 >>本Composer安装教程部分来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
 
 GitBash无法使用composer命令的解决办法，转自[即墨丹青](https://blog.csdn.net/qq_26282869/article/details/80054551)：
