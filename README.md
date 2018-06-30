@@ -14,9 +14,10 @@ php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');
 ```
 ```php
 php composer-setup.php
-//执行安装过程。
+// 执行安装过程。
 ```
 ```php
 php -r "unlink('composer-setup.php');"
 // 删除安装脚本。
 ```
+本Composer安装教程来自于(Packagist / Composer中国全量镜像)[https://pkg.phpcomposer.com/#how-to-install-composer]
