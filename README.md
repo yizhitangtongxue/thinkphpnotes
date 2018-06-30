@@ -45,3 +45,12 @@ php `dirname $0`/composer.phar $*
 ![Composer安装成功](https://github.com/yizhitangtongxue/thinkphpnotes/blob/master/Files/composer.png)
 
 ### 至此，Composer安装完成。
+
+*优化配置：*
+
+为了避免出现各种连接问题，建议使用国内的Composer镜像。在GitBash或者CMD命令行中执行以下命令：
+```composer
+composer config -g repo.packagist composer https://packagist.phpcomposer.com
+```
+
+## 使用Composer安装ThinkPHP5
