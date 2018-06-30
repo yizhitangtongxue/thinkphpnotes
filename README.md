@@ -20,4 +20,4 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 // 删除安装脚本。
 ```
-本Composer安装教程来自于(Packagist / Composer中国全量镜像)[https://pkg.phpcomposer.com/#how-to-install-composer]
+本Composer安装教程来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
