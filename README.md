@@ -72,6 +72,8 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
 ### 至此，ThinkPHP5安装完成。
 
+*优化配置：*
+
 我们可以用Git来维护文件版本，方便对文件进行版本的切换修改。
 
 在Github创建一个新的仓库，仓库名tp5。
@@ -147,3 +149,21 @@ tp5/application | 应用目录 | APP_PATH
 tp5/thinkphp | 框架核心目录 | THINK_PATH
 tp5/extend | 应用扩展目录	 | EXTEND_PATH
 tp5/vendor | Composer扩展目录 | VENDOR_PATH
+
+## 入口文件
+
+[PHP中的魔术常量](http://php.net/manual/zh/language.constants.predefined.php)
+
+TP5的默认入口文件在public/index.php，来看下入口文件内容：
+```php
+// [ 应用入口文件 ]
+
+// 定义应用目录
+define('APP_PATH', __DIR__ . '/../application/');
+// 加载框架引导文件
+require __DIR__ . '/../thinkphp/start.php';
+```
+
+\_\_DIR\_\_是PHP中的魔术常量，可以输出当前文件的绝对路径。
+
+>>..的意思是向上一级目录
