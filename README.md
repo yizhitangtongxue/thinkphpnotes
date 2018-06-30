@@ -167,3 +167,24 @@ require __DIR__ . '/../thinkphp/start.php';
 \_\_DIR\_\_是PHP中的魔术常量，可以输出当前文件的绝对路径。
 
 >>..的意思是向上一级目录
+
+## 域名配置
+
+将```C:\Windows\System32\drivers\etc\hosts```文件复制到桌面上，增加一条```127.0.0.1      tp5.test```到host文件中，再将hosts文件复制**替换**到```C:\Windows\System32\drivers\etc\hosts```下。至此，hosts文件修改完成。
+
+修改httpd-vhosts.conf(或vhosts.conf)文件，增加以下代码：
+```
+<VirtualHost *:80>
+  ServerName tp5.test
+  DocumentRoot "${INSTALL_DIR}/www/tp5/public"
+  <Directory "${INSTALL_DIR}/www/tp5/public">
+    Options +Indexes +Includes +FollowSymLinks +MultiViews
+    AllowOverride All
+    Require local
+  </Directory>
+</VirtualHost>
+```
+
+关于httpd-vhosts.conf的配置详情，可以查看[apache的AllowOverride以及Options使用详解](https://www.jb51.net/article/31721.htm)
+
+重启apache服务，在浏览器中输入tp5.test看到相关页面，即视为域名配置成功。
