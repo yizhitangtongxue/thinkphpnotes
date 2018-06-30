@@ -1,8 +1,6 @@
 # ThinkPHP5快速入门教程笔记
 
-## 安装ThinkPHP5
-
-### Composer方式安装ThinkPHP5。
+## 安装Composer，我将使用Composer安装ThinkPHP5
 
 1. 添加环境变量，使CMD命令行可以运行php命令。添加方法：右键打开"此电脑"->"属性"->"高级系统设置"->"环境变量"->"系统变量"->找到"Path"，双击它，选择"新建"，复制PHP的安装目录位置，比如我的是"D:\Wamp64\bin\php\php7.2.4"，复制黏贴完成后，点"确定就可以了"。到此,我们需要新开一个CMD命令行，运行"php -v"命令，如果成功跳出PHP的版本信息，即视为操作成功。
 
@@ -20,4 +18,14 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 // 删除安装脚本。
 ```
-本Composer安装教程来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
+在PHP的根目录下使用CMD命令行(或者GitBash)，新建composer.bat文件
+```php
+echo @php "%~dp0composer.phar" %*>composer.bat
+```
+下载[composer.phar](https://getcomposer.org/composer.phar)文件，将其复制到PHP的根目录下。
+
+本Composer安装教程部分来自于[Packagist / Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer)
+
+新开一个CMD命令行，使用composer -V命名，如果跳出版本信息即视为安装成功。
+
+3. >记得经常执行composer selfupdate以保持Composer一直是最新版本哦！
