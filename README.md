@@ -2,6 +2,8 @@
 
 ## 安装Composer，我将使用Composer安装ThinkPHP5
 
+[Composer中文文档](https://www.kancloud.cn/thinkphp/composer/35671)
+
 添加环境变量，使CMD命令行可以运行php命令。添加方法：右键打开"此电脑"->"属性"->"高级系统设置"->"环境变量"->"系统变量"->找到"Path"，双击它，选择"新建"，复制PHP的安装目录位置，比如我的是"D:\Wamp64\bin\php\php7.2.4"，复制黏贴完成后，点"确定就可以了"。到此，我们需要新开一个CMD命令行，运行"php -v"命令，如果成功跳出PHP的版本信息，即视为操作成功。
 
 打开命令行并依次执行下列命令安装最新版本的 Composer：
@@ -54,3 +56,9 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 ```
 
 ## 使用Composer安装ThinkPHP5
+
+[Composer中文文档](https://www.kancloud.cn/thinkphp/composer/35671)
+
+切换至Web根目录下，执行```composer create-project topthink/think=5.0.*  tp5  --prefer-dist```
+
+这行代码表示安装在5.0.0以上，5.1.0以下的最新ThinkPHP框架，它有可能是5.0.0甚至是5.0.9。
