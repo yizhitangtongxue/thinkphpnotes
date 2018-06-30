@@ -19,6 +19,6 @@ php -r "unlink('composer-setup.php');"
 ```
 
 3. 上述 3 条命令的作用依次是：
-1. 下载安装脚本 － composer-setup.php － 到当前目录。
-2. 执行安装过程。
-3. 删除安装脚本。
+  1. 下载安装脚本 － composer-setup.php － 到当前目录。
+  2. 执行安装过程。
+  3. 删除安装脚本。
