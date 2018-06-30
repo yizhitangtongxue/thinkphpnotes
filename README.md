@@ -164,6 +164,16 @@ define('APP_PATH', __DIR__ . '/../application/');
 require __DIR__ . '/../thinkphp/start.php';
 ```
 
+进到application(应用目录)目录下，可以看到只有一个index模块目录，可以使用控制台命令来添加新的模块目录。
+
+使用GitBash或者CMD命令行进入tp5根目录，执行如下命令添加新的模块(目录)：
+
+```
+php think build --module demoName
+```
+
+此命令会生成一个demo模块，同时也会生成一个默认的Index控制器文件。
+
 \_\_DIR\_\_是PHP中的魔术常量，可以输出当前文件的绝对路径。
 
 >>..的意思是向上一级目录
@@ -188,3 +198,5 @@ require __DIR__ . '/../thinkphp/start.php';
 关于httpd-vhosts.conf的配置详情，可以查看[apache的AllowOverride以及Options使用详解](https://www.jb51.net/article/31721.htm)
 
 重启apache服务，在浏览器中输入tp5.test看到相关页面，即视为域名配置成功。
+
+### 至此，域名配置成功。
