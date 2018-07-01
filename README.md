@@ -297,19 +297,19 @@ class index
 ```
 http://tp5.test/index/index/
 
-http://tp5.test/模块名/控制器文件名/
+http://tp5.test/模块名/控制器类名/
 ```
 或者：
 ```
 http://tp5.test/index.php/index/index/
 
-http://tp5.test/入口文件/模块名/控制器文件名/
+http://tp5.test/入口文件/模块名/控制器类名/
 ```
 也可以跟上方法名：
 ```
 http://tp5.test/index.php/index/index/index
 
-http://tp5.test/入口文件/模块名/控制器文件名/方法名
+http://tp5.test/入口文件/模块名/控制器类名/方法名
 ```
 
 需要注意：**控制器文件名与控制器类名要求相同，不区分大小写**。
@@ -427,7 +427,7 @@ application
 
 其中hello.html是模板名，模板名与控制器中的方法名绑定。
 
-*简单来说：控制器文件名称与视图view下的文件夹名绑定，比如控制器为Index.php，那么视图就是view\index文件夹*
+*简单来说：控制器类名称与视图view下的文件夹名绑定，比如控制器为Index.php\Index类，那么视图就是view\index文件夹*
 
 *简单来说：view\index\hello.html，hello就是模板名，与控制器Index.php中的方法名绑定*
 
