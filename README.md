@@ -464,4 +464,41 @@ fetch()方法默认会输出控制器中**与方法名相同的模板**。
 
 >>fetch方法中我们没有指定任何模板，所以按照系统默认的规则（视图目录/控制器/操作方法）输出了view/index/hello.html模板文件。
 
+模板中的变量需要用{}括起来。例子：```{$name}```。
+
 ### 至此，视图介绍完毕
+
+## 读取数据
+
+数据库的配置文件在```\tp5\database.php\```中。
+
+有个很有意思的选项
+```
+   // 数据库表前缀
+   'prefix'          => 'think_',
+   // 如果数据表的名称为think_data
+   // 在实际使用时可以省略为data
+```
+
+控制器需要继承```think\Controller;```才能对视图进行渲染。
+
+控制器需要继承```think\Db;```才能对数据库进行操作。
+
+```php
+// Db::name();方法用于指定默认的数据表名
+Db::name('tableName');
+
+// find()；方法用于查询单条语句
+Db::name('tableName')->find();
+```
+
+初步理解```Db::name('tableName')->find();```
+
+将```Db::name('tableName')```得到的(数据表名)数据作为参数传入```find()```方法中进行查询。
+
+```Db::name('tableName')->find();```也可以写成：
+```Db::find(Db::name('data'));```
+
+>>官方*读取数据*[文档](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/478277)
+
+### 至此，读取数据介绍完毕
