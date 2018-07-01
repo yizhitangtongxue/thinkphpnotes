@@ -257,6 +257,16 @@ ThinkPHP默认会开启调试模式，但是从5.0.10+版本开始，关闭了�
 
 ## 控制器
 
+*命名空间可以理解为存放各种类(属性、方法等)的容器。*
+
+*在ThinkPHP5.0的规范里面，命名空间其实对应了文件的所在目录。*
+
+*可以使用use关键字来导入类。*
+
+>>根据类的命名空间可以快速定位文件位置，在ThinkPHP5.0的规范里面，命名空间其实对应了文件的所在目录；
+>>app命名空间通常代表了文件的起始目录为application；
+>>think命名空间则代表了文件的起始目录为thinkphp/library/think，后面的命名空间则表示从起始目录开始的子目录。
+
 *用URL访问控制器的办法：*
 
 先来看一下默认的控制器位置处于：```\tp5\application\index\controller\Index.php```
@@ -322,8 +332,8 @@ class Base
 ```php
 // Index控制器(\tp5\application\index\controller\Index.php)
 namespace app\index\controller;
-// 引入Base类(Base控制器)
-// 引入区分大小写
+// 导入Base类(Base控制器)
+// 导入区分大小写
 use app\index\controller\Base;
 
 class index extends Base
@@ -335,7 +345,7 @@ class index extends Base
 }
 
 ```
->>use关键字引入时区分大小写。
+>>use关键字导入时区分大小写。
 
 *为控制器的方法定义参数：*
 ```php
