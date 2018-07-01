@@ -227,3 +227,80 @@ public
 │  ├─js       脚本目录
 │  └─img      图像目录
 ~~~
+
+同时，官方只建议将资源文件存放在public目录中，引用一下官方的原话：
+>>记住，千万不要在public目录之外的任何位置放置资源文件，包括application目录。
+
+### 至此，资源访问介绍完毕。
+
+## 调试模式
+
+ThinkPHP默认会开启调试模式，但是从5.0.10+版本开始，关闭了默认调试模式，需要自己开启。
+
+调试模式对性能有一定的影响。
+
+调试模式只能全局启用，不能对单独模块开启。
+
+建议在开发中开启调试模式，并在正式部署时关闭调试模式。
+
+>>为了安全考虑，避免泄露你的服务器WEB目录信息等资料，一定记得正式部署的时候关闭调试模式。
+
+修改```application/config.php```文件中的```app_debug```参数，可以开启或关闭调试模式。如下：
+```
+// 关闭调试模式
+'app_debug' =>  false,
+```
+
+### 至此，调试模式介绍完毕。
+
+## 控制器
+
+*用URL访问控制器的办法：*
+
+先来看一下默认的控制器位置处于：```\tp5\application\index\controller\Index.php```
+
+```\tp5\application\```后的第一个```index```是**模块名**
+
+```\controller\```后的第一个```Index.php```是**控制器名**
+
+打开Index.php控制器文件，可以看到如下代码：
+```php
+// 命名空间
+namespace app\index\controller;
+
+// 控制器类名
+class index
+{
+	// 控制器方法名
+    public function index($name = 'World')
+    {
+        return 'Hello,' .$name.'!';
+    }
+}
+```
+
+需要注意：**控制器文件名与控制器类名要求相同，不区分大小写**。
+
+使用URL地址来访问默认控制器```\tp5\application\index\controller\Index.php```。
+```
+http://tp5.test/index/index/
+
+http://tp5.test/模块名/控制器文件名/
+```
+或者：
+```
+http://tp5.test/index.php/index/index/
+
+http://tp5.test/入口文件/模块名/控制器文件名/
+```
+也可以跟上方法名：
+```
+http://tp5.test/index.php/index/index/index
+
+http://tp5.test/入口文件/模块名/控制器文件名/方法名
+```
+
+需要注意：**控制器文件名与控制器类名要求相同，不区分大小写**。
+
+>>可以通过在tp5根目录下使用CMD命令行或者GitBash执行```php think build --module 模块名```生成新模块。
+>>生成的新模块位于```/tp5/application/```文件夹下。
