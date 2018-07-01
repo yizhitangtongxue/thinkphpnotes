@@ -191,6 +191,8 @@ common.php是模块公共文件
 
 >>..的意思是向上一级目录
 
+### 至此，入口文件介绍完毕。
+
 ## 域名配置
 
 将```C:\Windows\System32\drivers\etc\hosts```文件复制到桌面上，增加一条```127.0.0.1      tp5.test```到host文件中，再将hosts文件复制**替换**到```C:\Windows\System32\drivers\etc\hosts```下。至此，hosts文件修改完成。
@@ -304,3 +306,84 @@ http://tp5.test/入口文件/模块名/控制器文件名/方法名
 
 >>可以通过在tp5根目录下使用CMD命令行或者GitBash执行```php think build --module 模块名```生成新模块。
 >>生成的新模块位于```/tp5/application/```文件夹下。
+
+*继承公用的控制器：*
+
+```php
+// Base控制器(\tp5\application\index\controller\Base.php)
+namespace app\index\controller;
+
+class Base
+{
+	public $name = 'Base';
+}
+```
+
+```php
+// Index控制器(\tp5\application\index\controller\Index.php)
+namespace app\index\controller;
+// 引入Base类(Base控制器)
+// 引入区分大小写
+use app\index\controller\Base;
+
+class index extends Base
+{
+    public function index()
+    {
+        return 'Hello,' .$this->name.'!';
+    }
+}
+
+```
+>>use关键字引入时区分大小写。
+
+*为控制器的方法定义参数：*
+```php
+// Func控制器(\tp5\application\indexc\ontroller\Func.php)
+namespace app\index\controller;
+
+class Func
+{
+	public function Func($world)
+	{
+		return 'Hello'. $world .'!';
+	}
+}
+
+// 提示方法不存在:app\index\controller\Func->index()的原因是我们这里定义的方法名是Func。
+// 而ThinkPHP默认设置的方法名是index，所以这里会报这样的错。
+// 解决办法1：把Func方法名改为index。
+// 解决办法2：在浏览器地址栏中加上完整的方法http://tp5.test/index/Func/Func?world=ThinkPHP
+```
+*在地址栏中传递```?参数名=参数值```可以向方法中传递参数值。*
+
+**只有public类型的方法是可以通过URL访问的，如果方法类型为private或者protected则会报异常。**例子：
+```php
+namespace app\index\controller;
+
+class Func
+{
+	public function Func($world)
+	{
+		return 'Hello'. $world .'!';
+	}
+	protected function Func2()
+	{
+		return '我是protected类型的方法';
+	}
+	private function Func3()
+	{
+		return '我是private类型的方法';
+	}
+	public function Func4()
+	{
+		return '我是public类型的方法';
+	}
+}
+```
+
+如果访问Func2和Func3方法，则会提示```方法不存在```，只有Func1和Func4可以访问。
+
+>>如果关闭了*调试模式*，则会提示*页面错误！请稍后再试~*。
+
+### 至此，控制器介绍完毕
