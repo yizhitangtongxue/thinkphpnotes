@@ -255,7 +255,7 @@ ThinkPHP默认会开启调试模式，但是从5.0.10+版本开始，关闭了�
 
 ### 至此，调试模式介绍完毕。
 
-## 控制器
+## 控制器Controller
 
 *命名空间可以理解为存放各种类(属性、方法等)的容器。*
 
@@ -360,6 +360,7 @@ class Func
 	}
 }
 
+// 执行方法：在浏览器地址栏中输入http://tp5.test/index/Func/Func?world=ThinkPHP。
 // 提示方法不存在:app\index\controller\Func->index()的原因是我们这里定义的方法名是Func。
 // 而ThinkPHP默认设置的方法名是index，所以这里会报这样的错。
 // 解决办法1：把Func方法名改为index。
@@ -367,7 +368,7 @@ class Func
 ```
 *在地址栏中传递```?参数名=参数值```可以向方法中传递参数值。*
 
-**只有public类型的方法是可以通过URL访问的，如果方法类型为private或者protected则会报异常。**例子：
+**只有public类型的方法是可以通过URL访问的，如果方法类型为private或者protected则会报异常**。例子：
 ```php
 namespace app\index\controller;
 
@@ -397,3 +398,70 @@ class Func
 >>如果关闭了*调试模式*，则会提示*页面错误！请稍后再试~*。
 
 ### 至此，控制器介绍完毕
+
+## 视图View
+
+>>think命名空间则代表了文件的起始目录为thinkphp/library/think，后面的命名空间则表示从起始目录开始的子目录。
+
+>>think是Think类库包目录。
+
+```use think\Controller;```即为导入```thinkphp/library/think```中的```Controller```类。
+
+我们可以在```\tp5\application\index```模块中新建一个视图```view```文件夹。
+
+文件结构解析：
+
+~~~
+application
+├─index	        模块目录
+│ ├─view        视图目录
+│ ├─controller  控制器目录
+│ └─model       模型目录
+~~~
+
+```\tp5\application\index\view```下的文件夹名称，与控制器绑定，举个例子：
+
+比如控制器是```\tp5\application\index\controller\Index.php```
+
+那么控制器绑定的视图就是```\tp5\application\index\view\index\hello.html```
+
+其中hello.html是模板名，模板名与控制器中的方法名绑定。
+
+*简单来说：控制器文件名称与视图view下的文件夹名绑定，比如控制器为Index.php，那么视图就是view\index文件夹*
+
+*简单来说：view\index\hello.html，hello就是模板名，与控制器Index.php中的方法名绑定*
+
+控制器指定了如何渲染视图。
+
+渲染视图需要用到```think```命名空间中的```Controller```类中的方法，所以需要先导入```Controller```类。
+
+```php
+namespace app\index\controller;
+
+// 导入Controller类，如果不导入的话，下面继承就得用class Index extends \think\Controller了
+use think\Controller;
+
+
+class Index extends Controller
+{
+    public function hello($name = 'thinkphp')
+    {
+        $this->assign('name', $name);
+        return $this->fetch();
+    }
+}
+```
+
+assign()方法可以为模板变量进行赋值。
+
+fetch()方法可以渲染输出，fetch()可以接受一个模板名作为参数,比如fetch('hello')。
+
+fetch()方法默认会输出控制器中**与方法名相同的模板**。
+
+*官方原话：*
+
+>>注意，Index控制器类继承了 think\Controller类之后，我们可以直接使用封装好的assign和fetch方法进行模板变量赋值和渲染输出。
+
+>>fetch方法中我们没有指定任何模板，所以按照系统默认的规则（视图目录/控制器/操作方法）输出了view/index/hello.html模板文件。
+
+### 至此，视图介绍完毕
