@@ -349,7 +349,7 @@ class index extends Base
 
 *为控制器的方法定义参数：*
 ```php
-// Func控制器(\tp5\application\indexc\ontroller\Func.php)
+// Func控制器(\tp5\application\index\controller\Func.php)
 namespace app\index\controller;
 
 class Func
