@@ -1,5 +1,7 @@
 # ThinkPHP5快速入门教程笔记
 
+# 基础
+
 ## 安装Composer，我将使用Composer安装ThinkPHP5
 
 [Composer中文文档](https://www.kancloud.cn/thinkphp/composer/35671)
@@ -502,3 +504,169 @@ Db::name('tableName')->find();
 >>官方*读取数据*[文档](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/478277)
 
 ### 至此，读取数据介绍完毕
+
+# URL和路由
+
+## URL访问
+
+>ThinkPHP采用单一入口模式访问应用，对应用的所有请求都定向到应用的入口文件，系统会从URL参数中解析当前请求的模块、控制器和操作(也就是方法)，下面是一个标准的URL访问格式：```http://domainName/index.php/模块/控制器/方法```。
+>>index.php就是应用的入口文件，通过修改apache的```.htaccess```或者nginx的```nginx.conf```文件，入口文件可被隐藏。
+
+>>无论URL是否开启大小写转换，模块名都会被强制小写。
+
+驼峰命名的控制器，例如类名为```HelloWorld```，那么正确的访问方式为```http://tp5.com/index.php/index/hello_world/index```
+
+关闭URL自动转换，即可支持驼峰命名法进行控制器访问，同时通过URL访问时需要严格区分大小写(模块强制小写)。
+
+```
+// 关闭URL自动转换（支持驼峰访问控制器）
+'url_convert' => false,
+```
+
+## 参数传入(在URL中传递参数值)
+
+我这里生成了一个模块test2，在test2下有一个Index控制器和index方法，还有个hello方法：
+```php
+namespace app\test2\controller;
+
+// 默认控制器
+Class Index
+{
+  // 默认方法(也叫操作)
+  public function index()
+  {
+    return 'index';
+  }
+
+  public function hello($name='World',$city)
+  {
+    return 'Hello'.$name.'You come from'.$city;
+  }
+}
+```
+
+**直接访问入口文件，由于在URL中没有指定模块、控制器、方法，所以系统会去访问默认的index模块、Index控制器、index方法。**可以看下配置文件：
+```php
+    // 文件位置：\tp5\application\config.php
+    // +----------------------------------------------------------------------
+    // | 模块设置
+    // +----------------------------------------------------------------------
+
+    // 默认模块名
+    'default_module'         => 'index',
+    // 禁止访问模块
+    'deny_module_list'       => ['common'],
+    // 默认控制器名
+    'default_controller'     => 'Index',
+    // 默认操作名
+    'default_action'         => 'index',
+    // 默认验证器
+    'default_validate'       => '',
+    // 默认的空控制器名
+    'empty_controller'       => 'Error',
+    // 操作方法后缀
+    'action_suffix'          => '',
+    // 自动搜索控制器
+    'controller_auto_search' => false,
+
+```
+
+在地址栏中通过输入tp5.test\index.php\test2\index\index可以访问默认的index方法(操作)。
+```访问tp5.test\index.php\模块\控制器\方法```
+
+>如果模块、控制器、操作都是默认的，并且做了入口文件隐藏，甚至只需要访问域名即可```tp5.test```或者```tp5.test\inedx.php```即可访问到index模块Index控制器index操作(也叫方法)。
+
+可以通过访问tp5.test\index.php\test2\index\hello来访问hello方法(也叫操作)。
+
+可以注意到hello操作中，有一个```$name```参数和一个```$city```参数，有两种方法可以在URL中给$name和$city**传递值**。
+```php
+  //···省略若干
+  public function hello($name='World',$city)
+  {
+    return 'Hello'.$name.'You come from'.$city;
+  }
+```
+
+方法1：tp5.test\index.php\test2\index\hello\name\thinkphp\city\Shanghai
+>tp5.test\index.php\test2\index\hello\参数1\参数值1\参数2\参数值2
+
+方法2：tp5.test\index.php\test2\index\hello?name=thinkphp&city=Shanghai
+>tp5.test\index.php\test2\index\hello?参数1=参数值1&参数2=参数值2
+
+可以看到hello方法会自动获取URL中的**同名**参数值作为方法的参数值，并且*不受顺序的影响*。
+
+可以对URL地址做简化，简化后URL的参数传值将严格按照传入的参数的顺序来传值了，并且免去了参数名，仅需要参数值。
+```php
+// 按照参数顺序获取
+'url_param_type' => 1,
+```
+URL地址简化后的访问方式：
+```tp5.test/index.php/test2/index/hello/thinkphp/shanghai```
+
+>按顺序绑定参数的话，操作方法的参数只能使用URL pathinfo变量，而不能使用get或者post变量。
+>>PATHINFO 模式是一种url访问方式，如下：http://域名/项目名/入口文件/模块名/方法名/键1/值1/键2/值2。
+
+## 定义路由
+
+首先，官方建议导入Route类，并使用Route::rule()方法来定义路由
+
+但是，数组的方式写路由也是被允许的，而且我觉得很方便。*Route::rule()也使用在Laravel框架中*。
+
+定义路由的文件处于```tp5\application\route.php```我们来添加一些路由。
+```php
+return [
+  'index3'=>'test2/Index/index',
+  'hello'=>'test2/Index/hello',
+];
+```
+```php
+  //···省略若干
+  public function hello($name='World')
+  {
+    return 'Hello'.$name;
+  }
+```
+现在，我们在地址栏中输入```tp5.test/index3```，就会路由到test2模块下的Index控制器下的index方法。
+同时，我们在地址栏中输入```tp5.test/hello```，就会路由到test2模块下的Index控制器下的hello方法。
+
+**使用路由，我们可以最大程度的简化URL地址栏。**
+
+如果路由这样写，我们访问```tp5.test/hello```时，会报错并提示```模块不存在```。
+```php
+return [
+  'hello/:name'=>'test2/Index/hello',
+];
+```
+我们可以把路由改为这样，使用```[]```将路由中的变量包围起来，使它变为可选参数，就可以正常访问了。
+```php
+return [
+  'hello/[:name]'=>'test2/Index/hello',
+]
+```
+
+### 动态定义路由规则
+
+道理还是一样的，只不过书写方式变了而已。
+
+原本这样的路由：
+```php
+return [
+  'hello/[:name]'=>'test2/Index/hello',
+]
+```
+动态定义路由规则的写法：
+```php
+  //tp5\application\route.php
+  use think\Route;
+  Route::rule('hello/[:name]','test2/Index/hello');
+```
+
+**路由的第一个参数是地址栏中输入的地址(路由后的名称)，第二个参数为被路由的模块、控制器、方法。**
+
+```:name```代表方法中的```$name```参数。
+
+**当路由规则以$结尾的时候就表示当前路由规则需要完整匹配(严格匹配)。**
+
+简单的说：以$结尾的路由，必须严格完整的输入路由名所带的参数。
+
+*在路由中，[]中的参数为可选参数。*
