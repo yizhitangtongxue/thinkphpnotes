@@ -435,7 +435,12 @@ application
 
 控制器指定了如何渲染视图。
 
+**渲染视图时，需要导入Controller类并继承Controller类**。
+
 渲染视图需要用到```think```命名空间中的```Controller```类中的方法，所以需要先导入```Controller```类。
+
+**驼峰命名法命名的控制器和方法名，在创建模板文件夹和模板文件时，需要注意使用```_```间隔大写字母**。否则会报错：
+```模板文件不存在:D:\Wamp64\www\tp5\public/../application/test4\view\test_con\say_age.html```
 
 ```php
 namespace app\index\controller;
@@ -665,8 +670,126 @@ return [
 
 ```:name```代表方法中的```$name```参数。
 
-**当路由规则以$结尾的时候就表示当前路由规则需要完整匹配(严格匹配)。**
+**当路由规则以$结尾的时候就表示当前路由规则需要完整匹配(严格匹配)，即不接受其他非路由允许的数据传入。**
 
 简单的说：以$结尾的路由，必须严格完整的输入路由名所带的参数。
 
 *在路由中，[]中的参数为可选参数。*
+
+如果定义了动态路由，但是提示模块不存在的解决办法，先来看几行代码：
+```php
+// tp5\application\route.php
+   use think\Route;
+
+   return[
+    'index3','index/Index/index',
+]
+   Route::rule('hello/[:name]'，'test2/Index/hello');
+
+// 这时我们去访问：tp5/hello/shanghai，就会报错并提示：模块不存在。
+
+```
+
+解决办法如下：调整代码位置
+```php
+// tp5\application\route.php
+   use think\Route;
+   Route::rule('hello/[:name]'，'test2/Index/hello');
+
+   return[
+    'index3','index/Index/index',
+]
+
+
+// 这时我们去访问：tp5/hello/shanghai，就会显示：Hello，shanghai
+
+```
+
+### 闭包定义，其实就是路由加匿名函数
+
+*注意return后面要加分号，```return;```*。
+
+```php
+use think\Route;
+// 闭包定义
+// 方法1：
+Route::rule('anonymous/[:city]',function($city = 'Shanghai'){return 'Hello ,'.$city;});
+
+// 方法1等同于方法2，只不过官方在TP5.1中更推荐方法1的写法。
+// 方法2：
+return [
+  'anonymous2/[:city]'=>function($city = 'Hangzhou'){return 'Hello ,'.$city;},
+];
+// 在浏览器中输入tp5.test/anonymous2，会输出Hello ,Hangzhou；输入tp5.test/anonymous2/Beijing，会输出Hello ,Beijing
+// 
+// 
+```
+
+*闭包定义结束*
+
+在```application\config.php中的``````pathinfo_depr```参数，可以改变URL的分隔符。就可以这样访问了：```http://tp5.com/hello-thinkphp```
+
+### 路由参数
+
+可以约束*路由规则中的的请求类型，或者URL后缀等条件*。例子：
+
+控制器：
+
+```php
+// 控制器文件tp5/application/test4/controller/TestCon.php
+namespace app\test4\controller;
+
+// 要渲染，先导入并继承Controller类
+use think\Controller;
+
+Class TestCon extends Controller
+{
+  public function sayName($name = '小明')
+  {
+    return 'My Name is: '.$name;
+  }
+
+  public function sayAge($age = 20)
+  {
+    $this->assign('myage',$age);
+    return $this->fetch();
+  }
+}
+
+// 使用tp5.test/test4/test_con/sayname来访问。会输出My Name is: 小明。
+```
+
+模板：
+
+```html
+<!-- 模板文件tp5/application/test4/view/test_con/say_age.html -->
+
+<html>
+<head>
+  <title>{$myage}</title>
+</head>
+<body>
+  <p>My Age is {$myage}</p>
+</body>
+</html>
+```
+
+路由：
+
+```php
+// 路由文件tp5/application/route.php
+use think\Route;
+
+// Route::rule('sayname/[:name]','test4/TestCon/sayname');
+
+return [
+  'sayage/[:age]'=>['test4/TestCon/sayage',['ext'=>'html']],
+];
+```
+
+已经设定了**路由参数**。现在访问tp5.test/sayage，会提示*模块不存在*，并且设置了*ext*参数，现在URL中只接受```.html```结尾的地址，并且无法在地址栏中为方法传入参数值。
+
+*路由参数完毕*
+
+### 变量规则
+
