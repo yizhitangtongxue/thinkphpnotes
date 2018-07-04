@@ -789,7 +789,114 @@ return [
 
 已经设定了**路由参数**。现在访问tp5.test/sayage，会提示*模块不存在*，并且设置了*ext*参数，现在URL中只接受```.html```结尾的地址，并且无法在地址栏中为方法传入参数值。
 
+**写路由时，第一个参数可以是任意字符，比如：**
+```php
+use think\Route;
+
+return [
+      // 路由名称/[可选参数]=>模块/控制器/方法
+     'myNameRoute'=>'test3/MyController/userinfo',
+];
+```
+
+
 *路由参数完毕*
 
+
 ### 变量规则
+
+路由规则的第二个参数的第二个参数叫做变量规则，变量规则可以限制网页访问方式，网页文件格式，正式表达式等。
+
+可以通过正则表达式决定要显示的页面，或者说决定要使用的路由。
+
+```php
+use think\Route;
+
+return [
+  'blog2/:year/:month' => ['test5/blog/archive',['method'=>'get','year'=>'\d{4}','month'=>'\d{2}']],
+  'blog2/:id'          => ['test5/blog/get', ['method' => 'get'], ['id' => '\d+']],
+  'blog2/:name'        => ['test5/blog/read', ['method' => 'get'], ['name' => '\w+']],
+];
+```
+
+可以看到上面的路由名称都是一样的，路由是如何分辨你是需要查看id的内容呢，还是name的内容呢？
+这就由正则表达式决定了：
+```php
+// \d+就是数字
+// \w+就是非数字
+// \d{4}就是4位的数字
+```
+
+*变量规则完毕*
+
+
+### 路由分组
+
+如果路由名称一样，参数不一样，那么可以将路由作为一个二维数组来使用;
+
+将原来的路由名称作为第一维的数据，记得在路由名称周围加上```[]```;
+
+```php
+use think\Route;
+
+return [
+  'blog2/:year/:month' => ['test5/blog/archive',['method'=>'get','year'=>'\d{4}','month'=>'\d{2}']],
+  'blog2/:id'          => ['test5/blog/get', ['method' => 'get'], ['id' => '\d+']],
+  'blog2/:name'        => ['test5/blog/read', ['method' => 'get'], ['name' => '\w+']],
+];
+```
+
+变成了以下内容
+
+```php
+use think\Route;
+
+return [
+  '[blog2]'=>[
+    ':year/:month' => ['test5/blog/archive',['method'=>'get','year'=>'\d{4}','month'=>'\d{2}']],
+    ':id'          => ['test5/blog/get', ['method' => 'get'], ['id' => '\d+']],
+    ':name'        => ['test5/blog/read', ['method' => 'get'], ['name' => '\w+']],
+  ],
+];
+```
+
+>>路由分组一定程度上可以提高路由检测的效率。
+
+*路由分组完毕*
+
+### 复杂路由
+
+局部变量规则会覆盖全局变量规则。
+
+```php
+use think\Route;
+
+return [
+  // 全局变量规则
+  '__pattern__' =>[
+    'year' => '\d{4}',
+    'month' => '\d{2}',
+  ],
+  // 局部变量
+  '[blog2]'=>[
+    ':year/:month' => 'test5/blog/archive',
+    ':id'          => ['test5/blog/get', ['method' => 'get'], ['id' => '\d+']],
+    ':name'        => ['test5/blog/read', ['method' => 'get'], ['name' => '\w+']],
+  ],
+];
+```
+
+*复杂路由完毕*
+
+*官方在TP5.1中建议使用```Route::rule()方法定义路由```*。
+
+## URL生成
+
+URL类可以简化路由规则，通过```Url::build()```方法，我们可以生成(URL地址)路由地址，并使路由地址自动加载方法的参数值。
+
+*进入下一章学习，URL生成具体的还是要看手册*
+
+### 至此，URL和路由介绍完毕
+
+# 请求和相应
 
