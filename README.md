@@ -898,5 +898,50 @@ URL类可以简化路由规则，通过```Url::build()```方法，我们可以�
 
 ### 至此，URL和路由介绍完毕
 
-# 请求和相应
+# 请求和响应
+
+*先来看一下**链式调用***：
+```php
+class abcd
+{
+  public function A()
+  {
+    echo 'Hello ';
+    return $this;
+  }
+
+  public function B()
+  {
+    echo 'World';
+    return $this;
+  }
+  public function C()
+  {
+    echo ' !';
+    return $this;
+  }
+  public function D()
+  {
+    return $this->A()->B()->C();
+  }
+}
+
+$abcd = new abcd();
+$abcd->D();
+// 链式调用就是同时调用几个方法，相比这种:
+// $abcd->A();
+// $abcd->B();
+// $abcd->C();
+// 更简单，也更好书写代码，更方便
+// 链式调用没那么复杂，就是一次性调用ABC方法而已。
+// 当然，前提是，方法中都return $this和它们都是一个类的方法。
+```
+
+## 请求和响应
+
+>>本章主要了解如何获取当前的请求信息，以及进行不同的输出响应、跳转和页面重定向。
+
+>>ThinkPHP5的架构设计和之前版本的主要区别之一就在于增加了Request请求对象和Response响应对象的概念，了解了这两个对象的作用和用法对你的应用开发非常关键。
+
+
 
