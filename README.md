@@ -891,11 +891,58 @@ return [
 *官方在TP5.1中建议使用```Route::rule()方法定义路由```*。
 
 ## URL生成
+路由参数中的```'ext' => 'html'```参数，此参数会强制我们必填.html后缀，就不能偷懒了。
 
-URL类可以简化路由规则，通过```Url::build()```方法，我们可以生成(URL地址)路由地址，并使路由地址自动加载方法的参数值。
+URL伪静态后缀会影响到url()方法自动识别的后缀。
+```
+    //application\config.php
+    // URL伪静态后缀
+    'url_html_suffix'        => 'html',
+```
 
-*进入下一章学习，URL生成具体的还是要看手册*
+来看个例子：
+```php
+// 路由
+use think\Route;
 
+return [
+  'today/[:year]/[:month]/[:day]'=>['request/Index/today',['method'=>'get'],['year'=>'\d{4}']],
+];
+```
+```php
+// 控制器
+namespace app\request\controller;
+
+Class Index
+{
+    public function today($year = 2018,$month = 7,$day=7)
+    {
+      echo '今天是：'.$year.'年'.$month.'月'.$day.'日。';
+      return url('request/Index/today',['year'=>$year,'month'=>$month,'day'=>$day]);
+    }
+}
+```
+```php
+// 输出
+// 当我们访问http://tp5.test/today就会输出
+// 今天是：2018年7月7日。/today-2018-7-7.html
+```
+为什么中间是-而不是/呢，因为我在config.php中设置了    
+```php
+// pathinfo分隔符
+    'pathinfo_depr'          => '-',
+// pathinfo分隔符可以改变地址栏中的分隔符
+```
+**SEO优化时，越多的```/```就会被百度识别成一级又一级的目录，而百度最多只抓到第三级目录，所以使用pathinfo分隔符对SEO比较好。**
+
+Url类可以简化路由规则，使用url()方法可以生成URL地址，以后配置改变也无需改动URL地址，用法：
+
+>>url('方法名','参数值');
+>>url方法的第一个参数是路由规则中的第二个参数
+
+*一般url用于模板中的各种链接中。*
+*推荐使用url()方法，而不是Url::build()*
+*官方文档介绍的很清晰，可以看[文档](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/478283)*
 ### 至此，URL和路由介绍完毕
 
 # 请求和响应
