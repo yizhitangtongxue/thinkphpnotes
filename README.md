@@ -993,11 +993,120 @@ $abcd->D();
 // 当然，前提是，方法中都return $this和它们都是一个类的方法。
 ```
 
-## 请求和响应
+# 请求和响应
 
 >>本章主要了解如何获取当前的请求信息，以及进行不同的输出响应、跳转和页面重定向。
 
 >>ThinkPHP5的架构设计和之前版本的主要区别之一就在于增加了Request请求对象和Response响应对象的概念，了解了这两个对象的作用和用法对你的应用开发非常关键。
 
+## Request
 
+**Request对象的作用**
 
+1. 请求客户端并于客户端进行交互。
+
+2. 收集客户端的Form，Cookie，超链接，或者收集服务器的环境变量。
+
+3. 可以直接使用Request对象代替```$_GET、$_POST、$_REQUEST、$_SESSION、$_COOKIE，甚至$_FILES```等全局变量。
+
+4. 需要use关键字导入think\Request类。
+
+**Request::instance()的作用**
+
+1. 调用```Request::instance()```方法可以生成Request对象。
+
+2. 将```Request::instance()```方法生成Request对象赋值给$request就可以调用```Request类中的方法```。
+
+3. 比如$request->url()可以设置或获取当前完整URL。
+
+4. 不能直接Request::url()，因为在Request类所处的文件中，url不是静态方法，不能被```::```调用。
+
+**new static()和new self()的区别和作用**
+
+1. new static()和new self()都是实例化当前类。
+
+2. new static()只要是谁调用的，就返回哪个类，不管是否继承。
+
+3. new self()如果当前调用的类存在父类，那么返回父类。
+
+**传统方式调用**
+
+>>该用法主要是用来告诉大家Request对象是如何实例化的，但实际开发中很少选择这种方式调用。
+
+*简单的例子：*
+
+```php
+namespace app\test6\controller;
+
+use think\Request;
+
+class Index
+{
+    public function index($name='world')
+    {
+      // 实例化Request类并赋值给变量
+      $request = Request::instance();
+      echo 'url: '.$request->url().'<br/>';
+      return 'Hello'.$name;
+    }
+
+}
+
+```
+
+**自动注入请求对象**
+
+>>可以使用Request对象注入的方式来简化调用，任何情况下都适用，**也是系统建议的方式**。
+
+*简单的例子：*
+```php
+namespace app\test6\controller;
+
+use think\Request;
+
+class Index
+{
+  protected $msg;
+
+    public function index2(Request $request,$name='world')
+    {
+      echo 'url: '.$request->url().'<br/>';
+      $msg  = 'Hello'.$name.'<br/>';
+      $msg .= '$request参数是系统自动注入的<br/>';
+      $msg .= 'Request $request这种方式呢，意思是类型提示，传入的参数必须是Request类生成的对象';
+      return $msg;
+    }
+
+}
+
+```
+
+$request参数是系统自动注入的。
+
+```public function index2(Request $request)```这种方式呢，意思是类型提示，传入的参数必须是Request类生成的对象。
+
+这样的话，实际上系统已经帮我们实例化了一个Request类并赋值给$request，我们可以直接调用Request对象中的方法。
+
+**使用助手函数**
+
+```php
+namespace app\index\controller;
+
+class Index
+{
+    public function hello($name = 'World')
+    {
+        // 获取当前URL地址 不含域名
+        echo 'url: ' . request()->url() . '<br/>';
+        return 'Hello,' . $name . '！';
+    }
+}
+```
+
+**动态绑定属性**
+
+*目前所学知识不够理解*
+
+## 请求信息
+
+*使用Request对象获取请求各种信息。*
