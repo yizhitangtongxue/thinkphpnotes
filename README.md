@@ -1110,3 +1110,245 @@ class Index
 ## 请求信息
 
 *使用Request对象获取请求各种信息。*
+
+**使用```param```方法可以替代方法中的参数，可以把参数写到param中。**
+
+**使用```param```方法获取请求变量。**这样做的优势有以下几点：
+
+1. 这是系统推荐的。
+
+2. 不需要区分请求类型。
+
+```php
+namespace app\test7\controller;
+
+use think\Request;
+
+Class Index
+{
+  public function hello(Request $request)
+  {
+    var_dump($request->param());
+    echo 'name:'.$request->param('name');
+  }
+}
+```
+
+3. ```$request->param()```括号内接受字符串形式的参数名，比如```$request->param('name')```
+
+4. ```'name'```参数就是在地址栏中输入的参数，比如```http://tp5.test/test7/Index/hello/name/小明```
+
+5. 上面的例子会输出：
+```
+D:\Wamp64\www\tp5\application\test7\controller\Index.php:10:
+array (size=1)
+  'name' => string 'CJK' (length=3)
+name:CJK
+```
+
+**使用助手函数input()**
+
+```php
+public function hello2()
+{
+  echo '请求参数：';
+  var_dump(input());
+  echo 'name: '.input('name');
+}
+```
+
+1. ```http://tp5.test/test7/Index/hello/name/JK```以上代码输出：
+
+```
+请求参数：
+D:\Wamp64\www\tp5\application\test7\controller\Index.php:17:
+array (size=1)
+  'name' => string 'JK' (length=2)
+name: JK
+```
+
+**param()方法获取的参数会自动判断当前的请求**
+
+*参数的优先级为(假设当前为```POST```请求)：*
+
+1. 优先级1：路由规则中的路由变量```['method'=>'get/post']```。
+
+2. 优先级2：当前请求变量($\_POST变量)。
+
+3. 优先级3：$\_GET变量。
+
+>param方法获取的参数会自动判断当前的请求，以POST请求为例的话，参数的优先级别为：
+>>路由变量 > 当前请求变量（$\_POST变量） > $\_GET变量。
+
+**param()方法支持变量的默认值和过滤**
+
+*例子：*
+
+```php
+  public function hello3(Request $request)
+  {
+    echo 'name:'.$request->param('name','World','strtolower');
+  }
+```
+
+可以看到以上代码中```param('参数名','默认参数值','strtolower')```
+
+**Request对象的其他方法**
+
+*除了Param方法之外，Request对象也可以用于获取其它的输入参数，例如：*
+
+获取变量的方法包括：
+
+|方法|作用|
+|---|---|
+|param|获取请求变量|
+|get|获取$_GET变量|
+|post|获取$_POST变量|
+|put|获取PUT请求变量|
+|delete|获取DELETE请求变量|
+|patch|获取PATCH请求变量|
+|request|获取$_REQUEST变量|
+|route|获取路由（URL）变量|
+|session|获取$_SESSION变量|
+|cookie|获取$_COOKIE变量|
+|server|获取$_SERVER变量|
+|env|获取$_ENV变量|
+|file|获取上传文件信息|
+
+*除了file方法之外，其它方法都支持默认值和过滤方法。*
+
+*例子：*
+```php
+  public function hello5(Request $request)
+  {
+    echo '当前请求方法  ：'.$request->method().'<br/>';
+    echo '当前请求IP  ：'.$request->ip().'<br/>';
+    echo '当前传入参数  ：'.$request->param('name','defaultValue').'<br/>';
+    echo '当前路由    ：'.$request->route('hello5','test7/Index/hello5');
+  }
+```
+
+*访问网址```http://tp5.test/test7/Index/hello5?name=123```的结果：*
+
+```
+当前请求方法  ：GET
+当前请求IP ：127.0.0.1
+当前传入参数  ：defaultValue
+当前路由  ：test7/Index/hello5
+```
+
+URL请求和信息方法可以总结如下：
+
+|方法|作用|
+|---|---|
+|domain|获取当前的域名|
+|url|获取当前的完整URL地址|
+|baseUrl|获取当前的URL地址，不含QUERY_STRING|
+|baseFile|获取当前的SCRIPT_NAME|
+|root|获取当前URL的root地址|
+|pathinfo|获取当前URL的pathinfo地址|
+|path|获取当前URL的pathinfo地址，不含后缀|
+|ext|获取当前URL的后缀|
+|type|获取当前请求的资源类型|
+|scheme|获取当前请求的scheme|
+|query|获取当前URL地址的QUERY_STRING|
+|host|获取当前URL的host地址|
+|port|获取当前URL的port号|
+|protocol|获取当前请求的SERVER_PROTOCOL|
+|remotePort|获取当前请求的REMOTE_PORT|
+
+*url、baseUrl、baseFile、root方法如果传入true，表示获取包含域名的地址。*
+
+例子：
+```php
+  public function hello6(Request $request,$name='ThinkPHP')
+  {
+    echo 'Domain：'.$request->domain().'<br/>';
+    echo 'Url：'.$request->url().'<br/>';
+    echo 'FullUrl：'.$request->domain().$request->url().'<br/>';
+    echo 'FullUrl2：'.$request->url(true).'<br/>';
+    echo 'BaseFile：'.$request->basefile().'<br/>';
+    echo 'BaseUrl：'.$request->baseurl().'<br/>';
+    echo 'Root：'.$request->root().'<br/>';
+    echo 'Root：'.$request->root(true).'<br/>';
+    echo 'PathInfo：'.$request->pathinfo().'<br/>';
+    echo 'Path：'.$request->path().'<br/>';
+    echo 'ext：'.$request->ext().'<br/>';
+    echo 'name：'.$name.'<br/>';
+    echo 'url：' .url('test7/Index/hello6',['name'=>'ThinkPH']);
+  }
+```
+*同时，官方[文档](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/478286)也很清晰*。
+
+用Request对象获取当前模块、控制器、方法。
+
+*例子：*
+
+```php
+  public function hello7(Request $request)
+  {
+    $hello  = '模块：'.$request->module().'<br/>';
+    $hello .= '控制器：'.$request->controller().'<br/>';
+    $hello .= '方法：'.$request->action().'<br/>';
+    return $hello;
+  }
+```
+
+*输出：*
+```
+模块：test7
+控制器：Index
+方法：hello7
+```
+
+用Request对象获取路由和调度信息。
+
+*例子：*
+
+```php
+//控制器
+  public function hello8(Request $request,$name='world')
+  {
+    echo '路由信息：';
+    var_dump($request->routeInfo());
+    echo '调度信息：';
+    var_dump($request->dispatch());
+    return 'Hello'.$name;
+    
+  }
+//路由
+use think\Route;
+
+return [
+'hello8/[:name]'=>['test7/Index/hello8',['method'=>'get'],['name'=>'\w+']],
+];
+
+//输出
+/*
+路由信息：
+D:\Wamp64\www\tp5\application\test7\controller\Index.php:75:
+array (size=4)
+  'rule' => 
+    array (size=2)
+      0 => string 'hello8' (length=6)
+      1 => string '[:name]' (length=7)
+  'route' => string 'test7/Index/hello8' (length=18)
+  'option' => 
+    array (size=1)
+      'method' => string 'get' (length=3)
+  'var' => 
+    array (size=1)
+      'name' => string 'World' (length=5)
+调度信息：
+D:\Wamp64\www\tp5\application\test7\controller\Index.php:77:
+array (size=3)
+  'type' => string 'module' (length=6)
+  'module' => 
+    array (size=3)
+      0 => string 'test7' (length=5)
+      1 => string 'Index' (length=5)
+      2 => string 'hello8' (length=6)
+  'convert' => boolean false
+HelloWorld
+*/
+```
