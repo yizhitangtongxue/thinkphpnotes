@@ -1381,3 +1381,7 @@ array (size=3)
 HelloWorld
 */
 ```
+
+### 至此，Request暂时学习完毕
+
+*Request真好用！*
