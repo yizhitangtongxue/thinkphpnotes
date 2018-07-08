@@ -1277,12 +1277,38 @@ URL请求和信息方法可以总结如下：
     echo 'Path：'.$request->path().'<br/>';
     echo 'ext：'.$request->ext().'<br/>';
     echo 'name：'.$name.'<br/>';
-    echo 'url：' .url('test7/Index/hello6',['name'=>'ThinkPH']);
+    echo 'url：' .url('test7/Index/hello6',['name'=>'ThinkPH']).'<br/>';
+    echo 'port：'.$request->port().'<br/>';
+    echo 'host：'.$request->host().'<br/>';
+    echo 'protocol：'.$request->protocol().'<br/>';
+    echo 'remotePort：'.$request->remotePort().'<br/>';
   }
 ```
+
+*以上代码会输出：*
+```
+Domain：http://tp5.test
+Url：/hello6
+FullUrl：http://tp5.test/hello6
+FullUrl2：http://tp5.test/hello6
+BaseFile：/index.php
+BaseUrl：/hello6
+Root：
+Root：http://tp5.test
+PathInfo：hello6
+Path：hello6
+ext：
+name：ThinkPHP
+url：/hello6/name/ThinkPH.html
+port：80
+host：tp5.test
+protocol：HTTP/1.1
+remotePort：53529
+```
+
 *同时，官方[文档](https://www.kancloud.cn/thinkphp/thinkphp5_quickstart/478286)也很清晰*。
 
-用Request对象获取当前模块、控制器、方法。
+**用Request对象获取当前模块、控制器、方法。**
 
 *例子：*
 
@@ -1303,7 +1329,7 @@ URL请求和信息方法可以总结如下：
 方法：hello7
 ```
 
-用Request对象获取路由和调度信息。
+**用Request对象获取路由和调度信息。**
 
 *例子：*
 
