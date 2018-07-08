@@ -1246,7 +1246,7 @@ URL请求和信息方法可以总结如下：
 |domain|获取当前的域名|
 |url|获取当前的完整URL地址|
 |baseUrl|获取当前的URL地址，不含QUERY_STRING|
-|baseFile|获取当前的SCRIPT_NAME|
+|baseFile|获取当前的入口文件|
 |root|获取当前URL的root地址|
 |pathinfo|获取当前URL的pathinfo地址|
 |path|获取当前URL的pathinfo地址，不含后缀|
