@@ -1261,7 +1261,8 @@ URL请求和信息方法可以总结如下：
 
 *url、baseUrl、baseFile、root方法如果传入true，表示获取包含域名的地址。*
 
-例子：
+*例子：*
+
 ```php
   public function hello6(Request $request,$name='ThinkPHP')
   {
