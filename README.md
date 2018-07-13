@@ -1385,3 +1385,165 @@ HelloWorld
 ### 至此，Request暂时学习完毕
 
 *Request真好用！*
+
+## Response响应对象
+
+*Response的作用：*
+
+1. 控制发送给用户的信息
+
+2. 响应客户端请示
+
+3. 页面跳转
+
+*如何控制发送给用户的信息呢？*
+
+*可以用json和xml方法控制发送给用户的信息。*
+
+1. *例子：*
+```php
+  public function hello9()
+  {
+    $data = ['name'=>'thinkphp','status'=>'1'];
+    return json($data,300,['Cache-control'=>'no-cache,must-revalidate']);
+    // return json($data)->code(201)->header(['Cache-control'=>'no-cache,must-revalidate']);
+  }
+```
+
+```return json(数据,Http状态,['Cache-control'=>'no-cache,must-revalidate']);```
+
+2. *页面跳转例子：*
+```php
+  use \traits\controller\Jump;
+
+  public function hello10($name='')
+  {
+    if($name == 'thinkphp') {
+      return $this->redirect('http://www.thinkphp.cn',301);
+    } elseif($name == 'php') {
+      return $this->success('欢迎您！'.$name,'hello11');
+    } else {
+      return $this->error('欢迎您游客','helloguest');
+    }
+  }
+
+  public function hello11()
+  {
+    return '欢迎您PHP';
+  }
+
+  public function helloguest()
+  {
+    return '您是游客';
+  }
+```
+
+```use \traits\controller\Jump;```，PHP是继承语言，使用\traits可以解决只能继承一个父类和代码复用的问题。
+
+### 至此，Response响应对象暂时学习完毕
+
+# 数据库
+
+*要想使用数据库查询，必须先引入Db类```use think\Db;```*。
+
+可以单独给模块配置数据库信息，配置文件在```\application\模块名\database.php```
+
+>>模块的数据库配置文件中只需要配置和全局数据库配置文件差异的部分，相同的不需要重复配置。
+
+*```\application\database.php```是全局数据库配置文件*
+
+*```\application\模块名\database.php```是局部数据库配置文件*
+
+*单独配置数据库的例子：*
+
+```php
+//配置文件
+return [
+    'database'        => 'demo',
+    // 数据库连接参数
+    'params'          => [\PDO::ATTR_PERSISTENT=>true],//使用长连接
+    // 数据库表前缀
+    'prefix'          => 'think_',
+];
+```
+
+## 原生查询
+
+*插入记录*
+
+## 数据库模型
+
+模型下的文件名，文件中的类名都与数据表对应，
+
+如果数据表名为think_tp，并且设置了
+
+``` 'prefix'          => 'think_',```
+
+那么文件名和类名为：tp
+
+表作为对象实例，字段作为对象的属性，记录作为属性的值
+
+第一次save就是insert。
+
+以后的save就是update
+
+如果想强制insert，可以使用$user->isUpdate(false)->save();
+
+模型操作基本要点：
+
+1. 删除(delete)、查询、更新(update)数据都是要先用静态方法```get()```查询出数据才能进行操作。
+
+2. 更新和新增数据都要调用到save()方法。只不过更新需要先```get()```查询一下。
+
+3. 建议先写路由，再到控制器中写方法。
+
+4. 模型会自动对应一个数据表，规范是：``` 'prefix' => 'think_',```数据表前缀+表名(也就是当前模型的类名)
+
+5. 模型对应数据表还有一个要求：模型文件名称与模型类名相等并且等于数据表名(不带前缀)
+
+## 读取器和修改器
+
+*读取器：*
+
+```php
+namespace app\index\model;
+
+use think\Model;
+
+class User extends Model
+{
+    // birthday读取器
+    protected function getBirthdayAttr($birthday)
+    {
+        return date('Y-m-d', $birthday);
+    }
+}
+```
+
+*getBirthdayAttr($birthday)方法会在读取birthday属性时自动执行。*
+
+自动执行需要遵循一个命名规范：**get + 属性名的驼峰命名+ Attr**
+
+可以读取数据表中不存在的属性：
+
+```php
+    protected function getUserBirthdayAttr($value,$data)
+    {
+        return date('Y-m-d', $data['birthday']);
+    }
+```
+
+*修改器：*
+
+```php
+    protected function setBirthdayAttr($birthday)
+    {
+        return strtotime($birthday);
+    }
+```
+
+*setBirthdayAttr($birthday)方法会在读取birthday属性时自动执行。*
+
+自动执行需要遵循一个命名规范：**set + 属性名的驼峰命名+ Attr**
+
+**使用了读取器和修改器，代表了数据在写入时会自动调用修改器，修改属性；数据在读取时会自动调用读取器，并读取修改器中的设置**
