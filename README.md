@@ -1547,3 +1547,37 @@ class User extends Model
 自动执行需要遵循一个命名规范：**set + 属性名的驼峰命名+ Attr**
 
 **使用了读取器和修改器，代表了数据在写入时会自动调用修改器，修改属性；数据在读取时会自动调用读取器，并读取修改器中的设置**
+
+## 类型自动转换
+
+在模型文件中，可以定义两个保护类型的属性，使控制器的属性可以自动完成类型转换
+
+```php
+protected $dateFromat = 'Y-m-d';
+protected $type = ['birthday'=>'timestamp:Y/m/d'];
+```
+
+$type的属性设置要优先于$dateFromat;可以使用$dateFromat配合$type使用
+
+$dateFromat会覆盖其他时间格式
+
+## 模型的自动完成功能
+
+```php
+  protected function getStatusAttr($value)
+  {
+    $status = [-1 => '删除',0 => '禁用',1 => '正常',2 =>'待审核'];
+    return $status[$value];
+  }
+
+```
+
+解释一下：
+
+1. 本方法在Status属性被读取时自动调用，并自动传入相关的值($value)
+
+2. $status=[] 这样写的意思代表了$status是一个数字下标的索引数组
+
+3. return $status[$value]; 代表了返回一个数组，数组的下标由方法传入的$value决定，返回的值由下标对应的值所决定
+
+4. 比如读取用户数据时，输出了用户状态，这时在模型中就会自动调用getStatusAttr方法，并传入值，然后返回了一个$value下标的数组
